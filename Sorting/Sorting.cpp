@@ -1,21 +1,47 @@
-// Sorting.cpp : Diese Datei enthält die Funktion "main". Hier beginnt und endet die Ausführung des Programms.
-//
-
 #include "pch.h"
 #include <iostream>
 
-int main()
-{
-    std::cout << "Hello World!\n"; 
+void bubble_sort(int* array, int length) {
+	if (length > 0) {
+		for (int m = 0; m < length; m++) {
+			for (int i = 0; i < length - 1; i++) {
+				if (array[i] > array[i + 1]) {
+					int tmp = array[i];
+					array[i] = array[i + 1];
+					array[i + 1] = tmp;
+				}
+			}
+		}
+	}
 }
 
-// Programm ausführen: STRG+F5 oder "Debuggen" > Menü "Ohne Debuggen starten"
-// Programm debuggen: F5 oder "Debuggen" > Menü "Debuggen starten"
+void selection_sort(int* array, int length) {
+	int min;
+	for (int i = 0; i < length; i++) {
+		min = array[i];
+		for (int m = (i + 1); m < length; m++) {
+			if (min > array[m]) {
+				min = m;
+			}
+		}
+		if (array[i] > array[min]) {
+			int tmp = array[i];
+			array[i] = array[min];
+			array[min] = tmp;
+		}
+	}
+}
 
-// Tipps für den Einstieg: 
-//   1. Verwenden Sie das Projektmappen-Explorer-Fenster zum Hinzufügen/Verwalten von Dateien.
-//   2. Verwenden Sie das Team Explorer-Fenster zum Herstellen einer Verbindung mit der Quellcodeverwaltung.
-//   3. Verwenden Sie das Ausgabefenster, um die Buildausgabe und andere Nachrichten anzuzeigen.
-//   4. Verwenden Sie das Fenster "Fehlerliste", um Fehler anzuzeigen.
-//   5. Wechseln Sie zu "Projekt" > "Neues Element hinzufügen", um neue Codedateien zu erstellen, bzw. zu "Projekt" > "Vorhandenes Element hinzufügen", um dem Projekt vorhandene Codedateien hinzuzufügen.
-//   6. Um dieses Projekt später erneut zu öffnen, wechseln Sie zu "Datei" > "Öffnen" > "Projekt", und wählen Sie die SLN-Datei aus.
+void print_array(int* array, int length) {
+	for (int i = 0; i < length; i++) {
+		printf("%d  ", array[i]);
+	}
+	printf("\n");
+}
+
+int main()
+{
+	int array[] = { 7, 6, 5, 4, 9, 1, 3, 8, 2 };
+	bubble_sort(array, 9);
+	print_array(array, 9);
+}
