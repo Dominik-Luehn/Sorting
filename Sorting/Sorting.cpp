@@ -1,14 +1,70 @@
 #include "pch.h"
 #include <iostream>
 
+void merge(int* array_a, unsigned int length_a, int* array_b,
+	unsigned int length_b) {
+	int buffer_length = length_a + length_b;
+	int* buffer = (int*)malloc(sizeof(int) * buffer_length);
+
+	int* end_array_a = array_a + length_a;
+	int* end_array_b = array_b + length_b;
+
+	for (int i = 0; i < buffer_length; ++i) {
+		if (array_a == end_array_a) {
+			buffer[i] = *array_b;
+			array_b++;
+		}
+		else if (array_b == end_array_b) {
+			buffer[i] = *array_a;
+			array_a++;
+		}
+		else {
+			if (*array_a < *array_b) {
+				buffer[i] = *array_a;
+				array_a++;
+			}
+			else {
+				buffer[i] = *array_b;
+				array_b++;
+			}
+		}
+	}
+
+	array_a -= length_a;
+	for (int i = 0; i < buffer_length; ++i) {
+		array_a[i] = buffer[i];
+	}
+
+	free(buffer);
+}
+
+int* merge_sort(int* array, unsigned int length) {
+	if (length <= 1) {
+		return array;
+	}
+	// divide
+	int mid = length / 2;
+	merge_sort(array, mid);
+	merge_sort(array + mid, length - mid);
+	merge(array, mid, array + mid, length - mid);
+
+	return array;
+}
+
+void swap_for_array(int* array, int first_element, int second_element) {
+	int tmp = array[first_element];
+	array[first_element] = array[second_element];
+	array[second_element] = tmp;
+}
+
+void swap_array(int* array) {}
+
 void bubble_sort(int* array, int length) {
 	if (length > 0) {
 		for (int m = 0; m < length; m++) {
 			for (int i = 0; i < length - 1; i++) {
 				if (array[i] > array[i + 1]) {
-					int tmp = array[i];
-					array[i] = array[i + 1];
-					array[i + 1] = tmp;
+					swap_for_array(array, i, (i + 1));
 				}
 			}
 		}
@@ -17,19 +73,52 @@ void bubble_sort(int* array, int length) {
 
 void selection_sort(int* array, int length) {
 	int min;
+	int min_pos;
 	for (int i = 0; i < length; i++) {
 		min = array[i];
+		min_pos = i;
 		for (int m = (i + 1); m < length; m++) {
 			if (min > array[m]) {
-				min = m;
+				min = array[m];
+				min_pos = m;
 			}
 		}
-		if (array[i] > array[min]) {
-			int tmp = array[i];
-			array[i] = array[min];
-			array[min] = tmp;
+		if (array[i] > array[min_pos]) {
+			swap_for_array(array, i, min_pos);
 		}
 	}
+}
+
+void insertion_sort(int* array, int length) {
+	int k;
+	int card;
+	for (int i = 1; i < length; i++) {
+		card = array[i];
+		k = i;
+		while (array[k - 1] > card  && k >= 1) {
+			array[k] = array[k - 1];
+			k--;
+		}
+		array[k] = card;
+	}
+}
+
+void quick_sort_Lomuto(int* array, int length){
+	int pivot;
+	pivot = array[length - 1];
+	int m = (length - 2);
+	for (int i = 0; i < m;) {
+		if (array[i] < pivot && array[m] > pivot) {
+			swap_for_array(array, i, m);
+			i++;
+			m--;
+		}
+	}
+	
+}
+
+void quick_sort_Hoare() {
+
 }
 
 void print_array(int* array, int length) {
@@ -41,7 +130,10 @@ void print_array(int* array, int length) {
 
 int main()
 {
-	int array[] = { 7, 6, 5, 4, 9, 1, 3, 8, 2 };
-	bubble_sort(array, 9);
-	print_array(array, 9);
+	int array[] = { 27, 76, 56, 43, 89, 12, 93, 38, 62, 10, 300};
+	printf("Alt: ");
+	print_array(array, 11);
+	insertion_sort(array, 11);
+	printf("Neu: ");
+	print_array(array, 11);
 }
