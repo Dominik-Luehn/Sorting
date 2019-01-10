@@ -112,12 +112,16 @@ void quick_sort_Lomuto(int* array, int length){
 			swap_for_array(array, i, m);
 			i++;
 			m--;
+		} else if (array[i] < pivot && array[m] < pivot) {
+			i++;
+		} else if(array[i] > pivot && array[m] > pivot){
+			m--;
 		}
 	}
 	
 }
 
-void quick_sort_Hoare() {
+void quick_sort_Hoare(int* array, int length) {
 
 }
 
