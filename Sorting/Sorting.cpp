@@ -1,5 +1,7 @@
 #include "pch.h"
 #include <iostream>
+#include <omp.h>
+
 
 void merge(int* array_a, unsigned int length_a, int* array_b,
 	unsigned int length_b) {
@@ -132,12 +134,27 @@ void print_array(int* array, int length) {
 	printf("\n");
 }
 
+void rand_numbers(int* array, int length) {
+	for (int i = 0; i < length; i++) {
+		array[i] = rand() % length;
+	}
+}
+
 int main()
 {
-	int array[] = { 27, 76, 56, 43, 89, 12, 93, 38, 62, 10, 300};
-	printf("Alt: ");
-	print_array(array, 11);
-	insertion_sort(array, 11);
-	printf("Neu: ");
-	print_array(array, 11);
+	double runtime;
+
+	int array[1000];
+
+	rand_numbers(array, 1000); //max. length = ca. 30.000
+
+	//printf("Alt: ");
+	//print_array(array, 1000);
+	runtime = omp_get_wtime();
+	merge_sort(array, 1000);
+	runtime = omp_get_wtime() - runtime;
+	//printf("Neu: ");
+	//print_array(array, 1000);
+
+	printf("Laufzeit: %f", runtime);
 }
